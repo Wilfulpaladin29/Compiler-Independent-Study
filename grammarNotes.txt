@@ -1,0 +1,9 @@
+Def of Grammars: 
+
+- A set of terminal symbols (tokens)
+- non-terminals (syntactic variables) is a set of strings of terminals
+- Productions, a production consists of a nonterminal, called the head or
+head or left side, a production is basically a culmination of a non-terminal on the
+left side and on the right side has other nonterminals or terminals
+- A designation of one of the nonterminals as the start syumbol
+

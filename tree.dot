@@ -1,0 +1,20 @@
+digraph identifierTree {
+    rankdir=TB;
+
+    A [label="<identifier>"];
+    B [label="<character>"];
+    C [label="c"];
+    D [label="<identifier>"];
+    E [label="<character>"];
+    F [label="a"];
+    G [label="<identifier>"];
+    H [label="<character>"];
+    I [label="t"];
+
+    A -> {B,D};
+    B -> C;
+    D -> {E,G};
+    E -> F;
+    G -> H;
+    H -> I;
+}
