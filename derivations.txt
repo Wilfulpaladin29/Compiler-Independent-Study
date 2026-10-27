@@ -1,7 +1,0 @@
-<identifier>
--> <character> <identifier>
--> "c" <identifier>
--> "c" <character> <identifier>
--> "c" "a" <identifier>
--> "c" "a" <character>
--> "c" "a" "t"
