@@ -1,3 +1,4 @@
+
 from sly import Lexer
 
 
@@ -50,10 +51,16 @@ class MyLexer(Lexer):
     # Literals and identifiers
     STRING_LITERAL = r'"([^"\\]|\\.)*"'
     CHAR_LITERAL = r"'([^'\\]|\\.)'"
-    NUMBER = r'\d+'
+
+    # Convert number tokens to integers
+    @_(r'\d+')
+    def NUMBER(self, t):
+        t.value = int(t.value)
+        return t
+
     ID = r'[a-zA-Z_][a-zA-Z0-9_]*'
 
-    #Keywords
+    # Keywords
     ID['int'] = INT
     ID['bool'] = BOOL
     ID['char'] = CHAR
@@ -63,12 +70,12 @@ class MyLexer(Lexer):
     ID['true'] = TRUE
     ID['false'] = FALSE
 
-    #Tracks amount of blank lines to skip
+    # Track line numbers
     @_(r'\n+')
     def ignore_newline(self, t):
         self.lineno += len(t.value)
 
-    # Invalid CHaracter detection
+    # Invalid character detection
     def error(self, t):
         print(
             f"Illegal character {t.value[0]!r} "
@@ -77,7 +84,7 @@ class MyLexer(Lexer):
         self.index += 1
 
 
-# Run the lexer
+# Run the lexer independently
 if __name__ == "__main__":
 
     lexer = MyLexer()
@@ -85,6 +92,5 @@ if __name__ == "__main__":
     with open("test.lang", "r") as file:
         source_code = file.read()
 
-    for token in lexer.tokenize(0
-source_code):
+    for token in lexer.tokenize(source_code):
         print(token.type, token.value)
