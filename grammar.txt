@@ -1,0 +1,92 @@
+
+<program> ::= <statement_list>
+
+<statement_list> ::= <statement>
+                   | <statement> <statement_list>
+
+<statement> ::= <declaration>
+              | <assignment>
+              | <input_statement>
+              | <output_statement>
+              | <if_statement>
+
+<declaration> ::= <type> ID <> <expression> ;
+
+<type> ::= int
+         | bool
+         | char
+
+<assignment> ::= ID <> <expression> ;
+
+<input_statement> ::= ip ( ID ) ;
+
+<output_statement> ::= op ( <expression> ) ;
+
+<if_statement> ::= if ( <expression> ) {
+                       <statement_list>
+                   }
+
+<expression> ::= <value>
+               | ID
+               | <expression> <operator> <expression>
+               | ( <type> ) <expression>
+               | ( <expression> )
+
+<value> ::= NUMBER
+          | BOOLEAN
+          | CHAR_LITERAL
+          | STRING_LITERAL
+
+<operator> ::= +
+             | -
+             | *
+             | /
+             | =
+             | !=
+             | <
+             | >
+             | <=
+             | >=
+             | &&
+             | ||
+
+
+TERMINALS
+
+Keywords:
+    INT           = int
+    BOOL          = bool
+    CHAR          = char
+    IF            = if
+    IP            = ip
+    OP            = op
+    TRUE          = true
+    FALSE         = false
+
+Identifiers and Literals:
+    ID            = variable names
+    NUMBER        = integer values
+    CHAR_LITERAL  = character values
+    STRING_LITERAL = string values
+
+Operators:
+    ASSIGN        = <>
+    EQUALS        = =
+    NOT_EQUALS    = !=
+    PLUS          = +
+    MINUS         = -
+    TIMES         = *
+    DIVIDE        = /
+    LESS          = <
+    GREATER       = >
+    LESS_EQUAL    = <=
+    GREATER_EQUAL = >=
+    AND           = &&
+    OR            = ||
+
+Punctuation:
+    LPAREN        = (
+    RPAREN        = )
+    LBRACE        = {
+    RBRACE        = }
+    SEMICOLON     = ;
