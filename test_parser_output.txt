@@ -1,0 +1,151 @@
+=== TOKENS ===
+INT 'int'
+ID 'age'
+ASSIGN '<>'
+NUMBER 18
+SEMICOLON ';'
+BOOL 'bool'
+ID 'isStudent'
+ASSIGN '<>'
+TRUE 'true'
+SEMICOLON ';'
+CHAR 'char'
+ID 'grade'
+ASSIGN '<>'
+CHAR_LITERAL "'A'"
+SEMICOLON ';'
+OP 'op'
+LPAREN '('
+STRING_LITERAL '"Enter your age: "'
+RPAREN ')'
+SEMICOLON ';'
+IP 'ip'
+LPAREN '('
+ID 'age'
+RPAREN ')'
+SEMICOLON ';'
+INT 'int'
+ID 'nextAge'
+ASSIGN '<>'
+ID 'age'
+PLUS '+'
+NUMBER 1
+SEMICOLON ';'
+BOOL 'bool'
+ID 'isAdult'
+ASSIGN '<>'
+ID 'age'
+GREATER_EQUAL '>='
+NUMBER 18
+SEMICOLON ';'
+CHAR 'char'
+ID 'ageAsChar'
+ASSIGN '<>'
+LPAREN '('
+CHAR 'char'
+RPAREN ')'
+ID 'age'
+SEMICOLON ';'
+INT 'int'
+ID 'gradeCode'
+ASSIGN '<>'
+LPAREN '('
+INT 'int'
+RPAREN ')'
+ID 'grade'
+SEMICOLON ';'
+ID 'nextAge'
+ASSIGN '<>'
+NUMBER 21
+SEMICOLON ';'
+ID 'isStudent'
+ASSIGN '<>'
+FALSE 'false'
+SEMICOLON ';'
+IF 'if'
+LPAREN '('
+ID 'age'
+GREATER_EQUAL '>='
+NUMBER 18
+RPAREN ')'
+LBRACE '{'
+OP 'op'
+LPAREN '('
+STRING_LITERAL '"You are an adult."'
+RPAREN ')'
+SEMICOLON ';'
+OP 'op'
+LPAREN '('
+ID 'age'
+RPAREN ')'
+SEMICOLON ';'
+RBRACE '}'
+IF 'if'
+LPAREN '('
+ID 'isStudent'
+EQUALS '='
+TRUE 'true'
+RPAREN ')'
+LBRACE '{'
+OP 'op'
+LPAREN '('
+STRING_LITERAL '"You are a student."'
+RPAREN ')'
+SEMICOLON ';'
+RBRACE '}'
+IF 'if'
+LPAREN '('
+ID 'grade'
+EQUALS '='
+CHAR_LITERAL "'A'"
+RPAREN ')'
+LBRACE '{'
+OP 'op'
+LPAREN '('
+STRING_LITERAL '"Excellent grade!"'
+RPAREN ')'
+SEMICOLON ';'
+RBRACE '}'
+INT 'int'
+ID 'negNum'
+ASSIGN '<>'
+MINUS '-'
+NUMBER 15
+SEMICOLON ';'
+OP 'op'
+LPAREN '('
+STRING_LITERAL '"negative number"'
+RPAREN ')'
+SEMICOLON ';'
+IP 'ip'
+LPAREN '('
+ID 'negNum'
+RPAREN ')'
+SEMICOLON ';'
+
+=== AST ===
+[('declaration', 'int', 'age', ('number', 18)),
+ ('declaration', 'bool', 'isStudent', ('boolean', True)),
+ ('declaration', 'char', 'grade', ('character', "'A'")),
+ ('output', ('string', '"Enter your age: "')),
+ ('input', 'age'),
+ ('declaration', 'int', 'nextAge', ('add', ('variable', 'age'), ('number', 1))),
+ ('declaration', 'bool', 'isAdult', ('greater_equal', ('variable', 'age'), ('number', 18))),
+ ('declaration', 'char', 'ageAsChar', ('cast', 'char', ('variable', 'age'))),
+ ('declaration', 'int', 'gradeCode', ('cast', 'int', ('variable', 'grade'))),
+ ('assignment', 'nextAge', ('number', 21)),
+ ('assignment', 'isStudent', ('boolean', False)),
+ ('if',
+  ('greater_equal', ('variable', 'age'), ('number', 18)),
+  [('output', ('string', '"You are an adult."')), ('output', ('variable', 'age'))]),
+ ('if',
+  ('equals', ('variable', 'isStudent'), ('boolean', True)),
+  [('output', ('string', '"You are a student."'))]),
+ ('if',
+  ('equals', ('variable', 'grade'), ('character', "'A'")),
+  [('output', ('string', '"Excellent grade!"'))]),
+ ('declaration', 'int', 'negNum', ('negate', ('number', 15))),
+ ('output', ('string', '"negative number"')),
+ ('input', 'negNum')]
+
+=== PARSING COMPLETE ===
