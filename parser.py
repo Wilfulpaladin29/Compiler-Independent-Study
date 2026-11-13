@@ -1,5 +1,12 @@
+
 from sly import Parser
 from lexer import MyLexer
+from ast_nodes import (
+    Number, Bool, BinaryOp, Character, String,
+    Variable, UnaryOp, Cast, Declaration,
+    Assignment, Input, Output, IfStatement,
+    Block, Program
+)
 
 
 class MyParser(Parser):
@@ -23,11 +30,11 @@ class MyParser(Parser):
 
     @_('statements')
     def program(self, p):
-        return p.statements
+        return Program(p.statements)
 
     @_('')
     def program(self, p):
-        return []
+        return Program([])
 
     # STATEMENT LISTS
 
@@ -43,31 +50,31 @@ class MyParser(Parser):
 
     @_('INT ID ASSIGN expression SEMICOLON')
     def declaration(self, p):
-        return ('declaration', 'int', p.ID, p.expression)
+        return Declaration('int', p.ID, p.expression)
 
     @_('BOOL ID ASSIGN expression SEMICOLON')
     def declaration(self, p):
-        return ('declaration', 'bool', p.ID, p.expression)
+        return Declaration('bool', p.ID, p.expression)
 
     @_('CHAR ID ASSIGN expression SEMICOLON')
     def declaration(self, p):
-        return ('declaration', 'char', p.ID, p.expression)
+        return Declaration('char', p.ID, p.expression)
 
     # ASSIGNMENTS
 
     @_('ID ASSIGN expression SEMICOLON')
     def assignment(self, p):
-        return ('assignment', p.ID, p.expression)
+        return Assignment(p.ID, p.expression)
 
     # INPUT / OUTPUT
 
     @_('IP LPAREN ID RPAREN SEMICOLON')
     def input_statement(self, p):
-        return ('input', p.ID)
+        return Input(p.ID)
 
     @_('OP LPAREN expression RPAREN SEMICOLON')
     def output_statement(self, p):
-        return ('output', p.expression)
+        return Output(p.expression)
 
     # STATEMENTS
 
@@ -95,119 +102,143 @@ class MyParser(Parser):
 
     @_('IF LPAREN expression RPAREN block')
     def if_statement(self, p):
-        return ('if', p.expression, p.block)
+        return IfStatement(p.expression, p.block)
 
     # BLOCKS
 
     @_('LBRACE statements RBRACE')
     def block(self, p):
-        return p.statements
+        return Block(p.statements)
 
     @_('LBRACE RBRACE')
     def block(self, p):
-        return []
+        return Block([])
 
     # LITERALS
 
     @_('NUMBER')
     def expression(self, p):
-        return ('number', p.NUMBER)
+        return Number(p.NUMBER)
 
     @_('TRUE')
     def expression(self, p):
-        return ('boolean', True)
+        return Bool(True)
 
     @_('FALSE')
     def expression(self, p):
-        return ('boolean', False)
+        return Bool(False)
 
     @_('CHAR_LITERAL')
     def expression(self, p):
-        return ('character', p.CHAR_LITERAL)
+        return Character(p.CHAR_LITERAL)
 
     @_('STRING_LITERAL')
     def expression(self, p):
-        return ('string', p.STRING_LITERAL)
+        return String(p.STRING_LITERAL)
 
     # VARIABLES
 
     @_('ID')
     def expression(self, p):
-        return ('variable', p.ID)
+        return Variable(p.ID)
 
     # ARITHMETIC
 
     @_('expression PLUS expression')
     def expression(self, p):
-        return ('add', p.expression0, p.expression1)
+        return BinaryOp(
+            'PLUS', p.expression0, p.expression1
+        )
 
     @_('expression MINUS expression')
     def expression(self, p):
-        return ('subtract', p.expression0, p.expression1)
+        return BinaryOp(
+            'MINUS', p.expression0, p.expression1
+        )
 
     @_('expression TIMES expression')
     def expression(self, p):
-        return ('multiply', p.expression0, p.expression1)
+        return BinaryOp(
+            'TIMES', p.expression0, p.expression1
+        )
 
     @_('expression DIVIDE expression')
     def expression(self, p):
-        return ('divide', p.expression0, p.expression1)
-
-    # NEGATIVE NUMBERS
-
-    @_('MINUS expression %prec UNARY')
-    def expression(self, p):
-        return ('negate', p.expression)
-
-    # TYPE CASTING
-
-    @_('LPAREN INT RPAREN expression %prec UNARY')
-    def expression(self, p):
-        return ('cast', 'int', p.expression)
-
-    @_('LPAREN CHAR RPAREN expression %prec UNARY')
-    def expression(self, p):
-        return ('cast', 'char', p.expression)
-
-    @_('LPAREN BOOL RPAREN expression %prec UNARY')
-    def expression(self, p):
-        return ('cast', 'bool', p.expression)
+        return BinaryOp(
+            'DIVIDE', p.expression0, p.expression1
+        )
 
     # COMPARISONS
 
     @_('expression GREATER expression')
     def expression(self, p):
-        return ('greater', p.expression0, p.expression1)
+        return BinaryOp(
+            'GREATER', p.expression0, p.expression1
+        )
 
     @_('expression LESS expression')
     def expression(self, p):
-        return ('less', p.expression0, p.expression1)
+        return BinaryOp(
+            'LESS', p.expression0, p.expression1
+        )
 
     @_('expression GREATER_EQUAL expression')
     def expression(self, p):
-        return ('greater_equal', p.expression0, p.expression1)
+        return BinaryOp(
+            'GREATER_EQUAL', p.expression0, p.expression1
+        )
 
     @_('expression LESS_EQUAL expression')
     def expression(self, p):
-        return ('less_equal', p.expression0, p.expression1)
+        return BinaryOp(
+            'LESS_EQUAL', p.expression0, p.expression1
+        )
 
     @_('expression EQUALS expression')
     def expression(self, p):
-        return ('equals', p.expression0, p.expression1)
+        return BinaryOp(
+            'EQUALS', p.expression0, p.expression1
+        )
 
     @_('expression NOT_EQUALS expression')
     def expression(self, p):
-        return ('not_equals', p.expression0, p.expression1)
+        return BinaryOp(
+            'NOT_EQUALS', p.expression0, p.expression1
+        )
 
     # BOOLEAN OPERATORS
 
     @_('expression AND expression')
     def expression(self, p):
-        return ('and', p.expression0, p.expression1)
+        return BinaryOp(
+            'AND', p.expression0, p.expression1
+        )
 
     @_('expression OR expression')
     def expression(self, p):
-        return ('or', p.expression0, p.expression1)
+        return BinaryOp(
+            'OR', p.expression0, p.expression1
+        )
+
+    # NEGATIVE NUMBERS
+
+    @_('MINUS expression %prec UNARY')
+    def expression(self, p):
+        return UnaryOp('MINUS', p.expression)
+
+    # TYPE CASTING
+
+    @_('LPAREN INT RPAREN expression %prec UNARY')
+    def expression(self, p):
+        return Cast('int', p.expression)
+
+    @_('LPAREN CHAR RPAREN expression %prec UNARY')
+    def expression(self, p):
+        return Cast('char', p.expression)
+
+    @_('LPAREN BOOL RPAREN expression %prec UNARY')
+    def expression(self, p):
+        return Cast('bool', p.expression)
 
     # PARENTHESES
 

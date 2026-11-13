@@ -1,4 +1,3 @@
-
 from lexer import MyLexer
 from parser import MyParser
 from pprint import pprint
@@ -41,12 +40,14 @@ op("negative number");
 ip(negNum);
 """
 
-print("=== TOKENS ===")
-for token in lexer.tokenize(source):
-    print(token.type, repr(token.value))
 
 print("\n=== AST ===")
 ast = parser.parse(lexer.tokenize(source))
-pprint(ast, width=100)
+
+print("Program:", type(ast).__name__)
+
+for statement in ast.statements:
+    print(type(statement).__name__, vars(statement))
 
 print("\n=== PARSING COMPLETE ===")
+
